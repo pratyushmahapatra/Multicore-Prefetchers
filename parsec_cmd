@@ -1,0 +1,29 @@
+touch out.txt;
+/pkgs/apps/blackscholes/inst/amd64-linux.gcc/bin/blackscholes $nthreads /pkgs/apps/blackscholes/inputs/in_10M.txt out.txt;
+
+/pkgs/apps/bodytrack/inst/amd64-linux.gcc/bin/bodytrack /pkgs/apps/bodytrack/inputs/sequenceB_261/ 4 261 40000 5 0 $nthreads
+
+/pkgs/kernels/canneal/inst/amd64-linux.gcc/bin/canneal $nthreads 10 0 /home/pratyush/private/parsec-3.0/pkgs/kernels/canneal/inputs/400000.nets
+
+/pkgs/kernels/dedup/inst/amd64-linux.gcc/bin/dedup -w gzip -i /pkgs/kernels/dedup/inputs/media.dat -o temp -t $nthreads
+
+cd pkgs/apps/facesim/inputs/ ; 
+../inst/amd64-linux.gcc/bin/facesim -threads $nthreads ;
+
+pkgs/apps/ferret/inst/amd64-linux.gcc/bin/ferret pkgs/apps/ferret/inputs/corel/ lsh pkgs/apps/ferret/inputs/queries/ 10 20 $nthreads out.txt
+
+pkgs/apps/fluidanimate/inst/amd64-linux.gcc/bin/fluidanimate $nthreads 5 pkgs/apps/fluidanimate/inputs/in_300K.fluid out.fluid
+
+export OMP_NUM_THREADS=$nthreads 
+pkgs/apps/freqmine/inst/amd64-linux.gcc/bin/freqmine pkgs/apps/freqmine/inputs/kosarak_990k.dat 790
+
+pkgs/apps/raytrace/inst/amd64-linux.gcc/bin/rtview pkgs/apps/raytrace/inputs/happy_buddha.obj -automove -nthreads $nthreads -frames 3 -res 1920 1080
+
+pkgs/kernels/streamcluster/inst/amd64-linux.gcc/bin/streamcluster 10 20 128 16384 16384 1000 none output.txt $nthreads
+
+pkgs/apps/swaptions/inst/amd64-linux.gcc/bin/swaptions -ns 64 -sm 40000 -nt $nthreads
+
+export IM_CONCURRENCY=$nthreads
+pkgs/apps/vips/inst/amd64-linux.gcc/bin/vips im_benchmark pkgs/apps/vips/inputs/bigben_2662x5500.v output.v
+
+
